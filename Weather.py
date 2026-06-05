@@ -15,5 +15,4 @@ for city in cities:
     data = response.json()
     data['city'] = city['name']
     
-    print(f"\n--- {city['name']} ---")
-    pp.pprint(data['current'])
+    print("successful")
