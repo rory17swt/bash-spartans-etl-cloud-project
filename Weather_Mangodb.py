@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import pprint as pp 
 
 
-# Connect to local MongoDB and target the weather database and collecton
+# Connect to local MongoDB and target the weather database and collection
 client = MongoClient()
 db = client ["weather_db"]
 collection = db["London_Forecast"]
@@ -21,7 +21,7 @@ records = []
 
 for city in cities:
 
-    # Build the API URL iterating thorugh each city and coordinates
+    # Build the API URL iterating through each city and coordinates
     url = f"https://api.open-meteo.com/v1/forecast?latitude={city['lat']}&longitude={city['lon']}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&current=temperature_2m,wind_speed_10m&timezone=Europe%2FLondon"
     
     # Fetched weather data from API
