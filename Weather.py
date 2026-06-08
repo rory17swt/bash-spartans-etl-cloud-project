@@ -8,10 +8,15 @@ cities = [
 ]
 
 for city in cities:
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={city['lat']}&longitude={city['lon']}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&current=temperature_2m,wind_speed_10m&timezone=Europe%2FLondon"
+    try:
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={city['lat']}&longitude={city['lon']}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&current=temperature_2m,wind_speed_10m&timezone=Europe%2FLondon"
+        
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        data['city'] = city['name']
+        
+        print(city['name'], data['current'])
     
-    response = requests.get(url)
-    data = response.json()
-    data['city'] = city['name']
-    
-    print(city['name'], data['current'])
+    except Exception as e:
+        print(f"ERROR: {e}")
