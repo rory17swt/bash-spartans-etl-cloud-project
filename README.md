@@ -29,6 +29,11 @@ print(data)
 ```
 
 ### 3. Fetching Multiple Cities
+
+![Open Meteo API](images/api-coordinates.png)
+
+Using the base URL we couldn't fetch data for multiple cities...
+
 Using the base URL we couldn't fetch data for multiple cities. Instead, we created a `for` loop that iterates through a `cities` list, building a dynamic URL for each city using an f-string.
 
 ```python
