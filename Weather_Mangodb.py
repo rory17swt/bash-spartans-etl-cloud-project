@@ -17,12 +17,30 @@ cities = [
 records = []
 
 for city in cities:
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={city['lat']}&longitude={city['lon']}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&current=temperature_2m,wind_speed_10m&timezone=Europe%2FLondon"
-    
-    response = requests.get(url)
-    data = response.json()
-    data['city'] = city['name']
-    records.append(data)
-    print(f"Fetched {city['name']}")
+    try:
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={city['lat']}&longitude={city['lon']}&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&current=temperature_2m,wind_speed_10m&timezone=Europe%2FLondon"
+        
+        response = requests.get(url)
 
-collection.insert_many(records)
+        # Raises an exeption if the request failed
+        response.raise_for_status()
+
+        data = response.json()
+        data['city'] = city['name']
+        records.append(data)
+
+        print(f"Fetched {city['name']}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {city['name']}: {e}")
+
+    except Exception as e:
+        print(f"Unexpected error for {city['name']}: {e}")
+
+try:
+    if records:
+        collection.insert_many(records)
+        print("Data inserted into MongoDB")
+
+except Exception as e:
+    print(f"MongoDB insert error: {e}")
