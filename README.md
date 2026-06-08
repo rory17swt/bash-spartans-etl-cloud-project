@@ -1,6 +1,6 @@
 # Bash Spartans ETL Cloud Project
 
-## Overview (add installations, use ENV's)
+## Overview
 A Python-based ETL pipeline that extracts live weather data from the Open Meteo API, stores it in MongoDB, exports it to JSON, and uploads it to AWS S3. Built collaboratively using GitHub branches.
 
 ## Pipeline
@@ -128,12 +128,13 @@ collection.insert_many(records)
 ![MongoDB Compass](images/MongoDB.png)
 
 
-### 5. Serialising Data to JSON
+### 5. Serialising Data to JSON and Uploading to S3
 
-We fetched all documents from MongoDB and exported them to a JSON file using `json.dump()`. We then opened the file to verify the data was exported correctly before uploading to S3:
+We fetched all documents from MongoDB and exported them to a JSON file using `json.dump()`. We then opened the `weather_data.json` file to verify the data was exported correctly before uploading to S3:
 
 ```python
 import json
+import boto3
 from pymongo import MongoClient
 from bson import json_util
 
@@ -150,6 +151,22 @@ with open("weather_data.json", "w") as f:
     json.dump(documents, f, default=json_util.default, indent=4)
 
 print("Data exported to weather_data.json")
+
+# Upload to S3
+s3_client = boto3.client('s3', region_name='eu-central-1')
+
+s3_client.upload_file(
+    Filename="weather_data.json",
+    Bucket="se-data-with-ai-etl-project",
+    Key="********/weather_data.json"
+)
+
+print("Uploaded to S3")
 ```
 
-`json_util` is used here to handle MongoDB's `_id` field (ObjectId), which isn't serializable by Python's standard `json` module.
+We connect to the local MongoDB instance and target the `weather_db` database and `London_Forecast` collection. `collection.find()` fetches all documents and stores them in a list. We then create a file called `weather_data.json` and use `json.dump()` to write the documents into it. We pass in `json_util` to handle MongoDB's `_id` field, without it the export would fail as Python's `json` module doesn't know how to convert it. Finally, `boto3` uploads the file to the shared S3 bucket using `upload_file()`.
+
+### Script Pipeline
+```
+MongoDB -> json.dump() -> weather_data.json -> boto3 -> S3
+```
