@@ -29,8 +29,7 @@ print(data)
 ```
 
 ### 3. Fetching Multiple Cities
-Using the base URL we struggled to fetch data from multiple cities. To combat this
-we made a `for` loop that went through the of cities on a list which built a dynamic URL for each one using an f-string.
+Using the base URL we couldn't fetch data for multiple cities. Instead, we created a `for` loop that iterates through a `cities` list, building a dynamic URL for each city using an f-string.
 
 ```python
 import requests
