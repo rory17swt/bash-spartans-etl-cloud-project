@@ -1,0 +1,7 @@
+New files:
+
+- added error handling in code files (update README)
+- test.py
+- delete.object.py
+- Obejct_Deleted.png
+- Objects.png

@@ -170,3 +170,4 @@ We connect to the local MongoDB instance and target the `weather_db` database an
 ```
 MongoDB -> json.dump() -> weather_data.json -> boto3 -> S3
 ```
+
