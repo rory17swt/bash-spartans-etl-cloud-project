@@ -26,7 +26,7 @@ try:
     s3_client.upload_file(
         Filename="weather_data.json",
         Bucket="se-data-with-ai-etl-project",
-        Key="********/weather_data.json"
+        Key="se-data-folder/se-rory/weather_data.json"
     )
 
     print("Uploaded to S3")
